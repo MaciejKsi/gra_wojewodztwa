@@ -1,0 +1,36 @@
+#map {
+  grid-area: map;
+  height: 100vh;
+}
+
+#szukanie {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 100px;
+  gap: 25px;
+}
+
+body {
+  margin: 0px;
+  display: grid;
+  grid-template-areas: "map gra";
+  grid-template-columns: 60% 40%;
+}
+
+#gra {
+  grid-area: gra;
+  height: 100vh;
+  background-color: gray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 111%;
+  display: grid;
+  grid-template-areas:
+    "zycia"
+    "losowanie"
+    "refresh";
+  grid-template-rows: 33% 33% 33%;
+}
