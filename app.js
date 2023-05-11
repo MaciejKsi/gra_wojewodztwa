@@ -13,43 +13,33 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 // po kliknieciu mapy cos sie dzieje
 function onMapClick(e) {
   console.log(e.latlng);
+  sprawdzanie();
 }
 
 map.on("click", onMapClick);
 
-// nazwy wojewodztw
+// pokazanie wojewodztw
 for (let i = 0; i <= wojewodztwa.features.length - 1; i++) {
   var wojewodztwo = wojewodztwa.features[i];
-
   var mapwojewodztwo = L.geoJSON(wojewodztwo, { color: "blue" }).addTo(map);
-  mapwojewodztwo.bindTooltip(wojewodztwa.features[i].properties.nazwa);
 }
 
 // losowanie wojewodztwa
-const wojewodztwal = [
-  "dolnośląskie",
-  "kujawsko-pomorskie",
-  "lubelskie",
-  "lubuskie",
-  "łódzkie",
-  "małopolskie",
-  "mazowieckie",
-  "opolskie",
-  "podkarpackie",
-  "podlaskie",
-  "pomorskie",
-  "śląskie",
-  "świętokrzyskie",
-  "warmińsko-mazurskie",
-  "wielkopolskie",
-  "zachodniopomorskie",
-];
 
 function losujWojewodztwo() {
-  const los = Math.floor(Math.random() * wojewodztwal.length);
-  console.log(wojewodztwal[los]);
+  const los = Math.floor(Math.random() * wojewodztwa.features.length);
+  console.log(wojewodztwa.features[los]);
   h1 = document.getElementById("losowanie").innerHTML =
-    "Wylosowane województwo: " + wojewodztwal[los];
+    "Wylosowane województwo: " + wojewodztwa.features[los].properties.nazwa;
 }
 
-function sprawdzanie() {}
+function sprawdzanie() {
+  const los = Math.floor(Math.random() * wojewodztwa.features.length);
+  map.on("click", function () {
+    if (wojewodztwa.features.length == los) {
+      alert("Wygrałeś!");
+    } else {
+      alert("Spróbuj jeszcze raz.");
+    }
+  });
+}
