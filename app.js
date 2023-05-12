@@ -66,6 +66,12 @@ wojewodztwaLayer.on("click", function (e) {
       poprawnyLayer.getBounds().getCenter(),
       kliknietyLayer.getBounds().getCenter(),
     ];
+    var startMarker = L.marker(latlngs[0]).addTo(map);
+    var endMarker = L.marker(latlngs[latlngs.length - 1]).addTo(map);
+    var odle = startMarker.getLatLng().distanceTo(endMarker.getLatLng());
+    var polyline = L.polyline(latlngs, { color: "red" }).addTo(map);
+    polyline.bindTooltip((odle / 1000).toFixed(2) + " km", { permanent: true });
+
     var polyline = L.polyline(latlngs, { color: "red" }).addTo(map);
 
     zycia -= 1;
