@@ -4,42 +4,91 @@ var map = L.map("map", { dragging: false }).setView(
   7
 );
 
+var punkty = 0;
+var zycia = 3;
+
+const div_punkty = document.getElementById("punkty");
+const div_zycia = document.getElementById("zycia");
+
+div_punkty.innerHTML += punkty;
+div_zycia.innerHTML += zycia;
+
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19,
   attribution:
     '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 }).addTo(map);
 
-// po kliknieciu mapy cos sie dzieje
-function onMapClick(e) {
-  console.log(e.latlng);
-  sprawdzanie();
-}
+map.dragging.disable();
+map.scrollWheelZoom.disable();
 
-map.on("click", onMapClick);
+console.log(wojewodztwa);
 
-// pokazanie wojewodztw
-for (let i = 0; i <= wojewodztwa.features.length - 1; i++) {
-  var wojewodztwo = wojewodztwa.features[i];
-  var mapwojewodztwo = L.geoJSON(wojewodztwo, { color: "blue" }).addTo(map);
-}
+// Dodanie warstwy województw do mapy
+var wojewodztwaLayer = L.geoJSON(wojewodztwa.features).addTo(map);
 
-// losowanie wojewodztwa
-
+// Funkcja losująca województwo
 function losujWojewodztwo() {
-  const los = Math.floor(Math.random() * wojewodztwa.features.length);
-  console.log(wojewodztwa.features[los]);
-  h1 = document.getElementById("losowanie").innerHTML =
-    "Wylosowane województwo: " + wojewodztwa.features[los].properties.nazwa;
+  // Pobranie wszystkich województw z warstwy
+  var wojewodztwa = wojewodztwaLayer.getLayers();
+
+  // Wylosowanie jednego województwa
+  var wylosowaneWojewodztwo =
+    wojewodztwa[Math.floor(Math.random() * wojewodztwa.length)];
+
+  // Zwrócenie nazwy wylosowanego województwa
+  return wylosowaneWojewodztwo.feature.properties.nazwa;
 }
 
-function sprawdzanie() {
-  const los = Math.floor(Math.random() * wojewodztwa.features.length);
-  map.on("click", function () {
-    if (wojewodztwa.features.length == los) {
-      alert("Wygrałeś!");
-    } else {
-      alert("Spróbuj jeszcze raz.");
+// Wywołanie funkcji losującej województwo
+var wylosowane = losujWojewodztwo();
+
+document.getElementById("wojewodz").innerHTML =
+  "Kliknij Województwo: " + wylosowane;
+
+wojewodztwaLayer.on("click", function (e) {
+  var kliknieteWojewodztwo = e.layer.feature.properties.nazwa;
+
+  if (kliknieteWojewodztwo === wylosowane) {
+    punkty++;
+    div_punkty.innerHTML = `Punkty: ${punkty}`;
+    alert(`Gratulacje, Zdobywasz Punkt, Masz ${punkty} punkt`);
+    wylosowane = losujWojewodztwo();
+    console.log(wylosowane);
+  } else {
+    var poprawneWojewodztwo = wylosowane;
+    var poprawnyLayer = wojewodztwaLayer
+      .getLayers()
+      .find((layer) => layer.feature.properties.nazwa === poprawneWojewodztwo);
+    var kliknietyLayer = e.layer;
+
+    var latlngs = [
+      poprawnyLayer.getBounds().getCenter(),
+      kliknietyLayer.getBounds().getCenter(),
+    ];
+    var polyline = L.polyline(latlngs, { color: "red" }).addTo(map);
+
+    zycia -= 1;
+    div_zycia.innerHTML = `Zycia: ${zycia}`;
+    alert(`Niestety, spróbuj jeszcze raz. Zostały ci ${zycia} zycia`);
+    wylosowane = losujWojewodztwo();
+    console.log(wylosowane);
+    if (zycia == 0) {
+      document.getElementById("body").innerHTML = "";
+      document.getElementById("body").style.backgroundColor = "black";
+      document.getElementById("body").style.marginLeft = "500px";
+      var game = document.createElement("h1");
+      game.setAttribute("id", "koniec");
+      game.innerHTML = "Game Over";
+
+      var p = document.createElement("p");
+      p.setAttribute("id", "pk");
+      p.innerHTML = "Twoja liczba punktów to: " + punkty;
+
+      document.getElementById("body").appendChild(game);
+      document.getElementById("body").appendChild(p);
     }
-  });
-}
+  }
+  document.getElementById("wojewodz").innerHTML =
+    "Kliknij Województwo: " + wylosowane;
+});

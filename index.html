@@ -4,30 +4,30 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+      integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+      crossorigin=""
+    ></script>
     <link rel="stylesheet" href="style.css" />
-    <title>Gra województwa</title>
   </head>
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-    integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
-    crossorigin=""
-  />
 
-  <body>
-    <div id="map">
-      <script
-        src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
-        crossorigin=""
-      ></script>
-      <script src="geojson.js"></script>
-      <script src="app.js"></script>
+  <body id="body">
+    <div id="map"></div>
+
+    <div id="menu">
+      <h1 id="wojewodz"></h1>
+      <p id="punkty">Punkty:</p>
+      <p id="zycia">Zycia:</p>
     </div>
-    <div id="gra">
-      <h1 id="zycia">Pozostałe życia: 3</h1>
-      <h1 id="losowanie">Wylosowane województwo:</h1>
-      <button id="refresh" onclick="losujWojewodztwo()">Losuj</button>
-    </div>
+    <script src="geojson.js"></script>
+    <script src="app.js"></script>
   </body>
 </html>
