@@ -34,3 +34,11 @@ body {
     "refresh";
   grid-template-rows: 33% 33% 33%;
 }
+
+#koniec {
+  color: white;
+}
+
+#pk {
+  color: white;
+}
